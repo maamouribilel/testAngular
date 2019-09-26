@@ -1,0 +1,200 @@
+<app-header></app-header>
+
+<button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Export All Data" (click)="dt.exportCSV()"
+  style="float:left"></button>
+<button type="button" pButton icon="fa fa-file" iconPos="left" label="Export Selection Only"
+  (click)="dt.exportCSV({ selectionOnly: true })" style="float:right"></button>
+
+<hr />
+<br /><br />
+<p-table #dt [value]="users" [paginator]="true" [rows]="5" [columns]="selectedColumns" [globalFilterFields]="cols"
+  [resizableColumns]="true" [reorderableColumns]="true" selectionMode="multiple">
+  <ng-template pTemplate="caption">
+    <div class="p-grid">
+      <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+        selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" defaultLabel="Choose Columns">
+      </p-multiSelect>
+
+      <i class="fa fa-plus" style="margin:4px 4px 0 0;color:blue;">+</i>
+      <input type="text" pInputText size="50" placeholder="Global Filter"
+        (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto;" class="searchInput"
+        icon="fa fa-plus" />
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns" pResizableColumn pReorderableColumn>
+        <p-inplace closable="closable">
+          <span pInplaceDisplay>
+            {{ col.header }}
+          </span>
+          <span pInplaceContent>
+            <input type="text" value="" pInputText style="border:none;border-bottom:1px solid black;height: 35px;"
+              (input)="
+                dt.filter($event.target.value, col.field, col.filterMatchMode)
+              " />
+          </span>
+        </p-inplace>
+        <!--
+        <p-sortIcon
+          [field]="col.field"
+          ariaLabel="Activate to sort"
+          ariaLabelDesc="Activate to sort in descending order"
+          ariaLabelAsc="Activate to sort in ascending order"
+        ></p-sortIcon>
+        -->
+      </th>
+    </tr>
+    <tr>
+      <th *ngFor="let col of columns" [ngSwitch]="col.field">
+        <input *ngSwitchCase="col.field" pInputText type="text" (input)="
+            dt.filter($event.target.value, col.field, col.filterMatchMode)
+          " class="searchInput" />
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns" let-index="rowIndex">
+    <tr [pSelectableRow]="rowData" [pReorderableRow]="index">
+      <td *ngFor="let col of columns" class="ui-resizable-column">
+        {{ rowData[col.field] }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<br />
+
+<br />
+
+<br />
+<hr />
+<br />
+<h2 style="text-align: center"></h2>
+
+<button class="ui-toolbar-group-right" pButton type="button" style="margin-bottom: 40px;cursor: pointer;"
+  (click)="showAddDialog()">
+  <i class="fa fa-plus"></i>
+</button>
+<button (click)="showAddDialog()">aaaaa</button>
+<p-table #dtE [value]="employees" [paginator]="true" [rows]="15">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>
+        <p-inplace closable="closable">
+          <span pInplaceDisplay>
+            id
+          </span>
+          <span pInplaceContent>
+            <input type="text" value="" pInputText style="border:none;border-bottom:1px solid black;height: 35px;"
+              (input)="dtE.filter($event.target.value, 'id')" />
+          </span>
+        </p-inplace>
+      </th>
+      <th>
+        <p-inplace closable="closable">
+          <span pInplaceDisplay>
+            Name
+          </span>
+          <span pInplaceContent>
+            <input type="text" value="" pInputText style="border:none;border-bottom:1px solid black;height: 35px;"
+              (input)="dtE.filter($event.target.value, 'employee_name')" />
+          </span>
+        </p-inplace>
+      </th>
+      <th>
+        <p-inplace closable="closable">
+          <span pInplaceDisplay>
+            Salary
+          </span>
+          <span pInplaceContent>
+            <input type="text" value="" pInputText style="border:none;border-bottom:1px solid black;height: 35px;"
+              (input)="dtE.filter($event.target.value, 'employee_salary')" />
+          </span>
+        </p-inplace>
+      </th>
+      <th>
+        <p-inplace closable="closable">
+          <span pInplaceDisplay>
+            Age
+          </span>
+          <span pInplaceContent>
+            <input type="text" value="" pInputText style="border:none;border-bottom:1px solid black;height: 35px;"
+              (input)="dtE.filter($event.target.value, 'employee_age')" />
+          </span>
+        </p-inplace>
+      </th>
+      <th>
+        Actions
+      </th> 
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-employee>
+    <tr>
+      <td>
+        <a style="cursor: pointer;" (click)="getEmployee(employee.id)" (click)="showDialog()">{{ employee.id }}</a>
+      </td>
+      <td>{{ employee.employee_name }}</td>
+      <td>{{ employee.employee_salary }}</td>
+      <td>{{ employee.employee_age }}</td>
+      <td>
+        <button class="ui-button-success" pButton type="button" icon="fa fa-edit" iconPos="left"></button>
+        &nbsp; &nbsp; &nbsp;
+        <button class="ui-button-danger" pButton type="button" icon="fa fa-trash" iconPos="left"
+          (click)="deleteEmployee(employee.id)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog header="Title" [(visible)]="display">
+  <p-header>
+    {{ selectedEmployee.id }}
+  </p-header>
+  {{ selectedEmployee.employee_name }}
+  <br />
+  {{ selectedEmployee.employee_salary }}
+  <br />
+  {{ selectedEmployee.employee_age }}
+  <p-footer>
+    //buttons
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Title" [(visible)]="displayAddForm" [style]="{ width: '70%' }">
+  <p-header>
+    Add Employee Form
+  </p-header>
+  <div class="p-grid">
+    <form [formGroup]="addForm" class="login-container" (ngSubmit)="onAddEmployee()" class="addForm">
+      <div class="p-grid">
+        <div class="p-col-12">
+          <input class="p-md-12 p-lg-12" pInputText type="text" placeholder="Name" formControlName="name"
+            class="textInput" />
+
+          <span class="errorMsg" *ngIf="addForm.get('name').invalid && addForm.get('name').touched">Name is
+            required</span>
+        </div>
+        <div>
+          <input class="textInput" pInputText type="text" placeholder="salary" formControlName="salary" />
+          <span class="errorMsg" *ngIf="
+              addForm.get('salary').invalid && addForm.get('salary').touched
+            ">Salary is required</span>
+        </div>
+        <div>
+          <input class="textInput" pInputText type="text" placeholder="Age" formControlName="age" />
+          <span class="errorMsg" *ngIf="
+              addForm.get('age').invalid && addForm.get('age').touched
+            ">Age is required</span>
+        </div>
+        <div>
+          <input class="textInput" pInputText type="text" placeholder="Id" formControlName="id" />
+          <span class="errorMsg" *ngIf="
+              addForm.get('id').invalid && addForm.get('id').touched
+            ">Id is required</span>
+        </div>
+        <input type="submit" value="Add Employee" class="addFormBtn" [disabled]="addForm.invalid" />
+      </div>
+    </form>
+  </div>
+</p-dialog>

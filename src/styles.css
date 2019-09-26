@@ -1,0 +1,57 @@
+/* You can add global styles to this file, and also import other style files */
+
+.ui-table-caption {
+  border: 1px solid red !important;
+  background-color: #fff !important;
+}
+
+.ui-widget-header {
+  background-color: #fff !important;
+  border: none !important;
+}
+
+.searchInput {
+  height: 40px;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid black;
+}
+
+.searchInput:focus {
+  height: 40px;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #0386db;
+}
+
+.addForm {
+  padding: 10px;
+}
+
+.textInput {
+  height: 35px;
+  width: 50%;
+  margin-left: 24%;
+  border: none;
+  border-bottom: 1px black solid;
+}
+
+.textInput:focus {
+  outline: none;
+  border-bottom: 1px #0386db solid;
+
+}
+
+.addFormBtn {
+  margin-top: 25px;
+  background-color: #0386db;
+  color: #fff;
+  width: 150px;
+  height: 35px;
+  border: none;
+  float: right;
+}
+
+.errorMsg {
+  color: rgb(221, 119, 119);
+}
